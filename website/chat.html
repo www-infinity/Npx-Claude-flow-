@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Infinity AI Chat — Gemma 3 autonomous agent with full reasoning trace and tool-call visualization." />
+  <title>Infinity | AI Agent Chat</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+</head>
+<body class="chat-page">
+
+  <!-- Navigation -->
+  <header class="site-header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">∞ Infinity</a>
+      <ul class="nav__links">
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#how-it-works">How it works</a></li>
+        <li><a href="index.html#quickstart">Quickstart</a></li>
+        <li>
+          <!-- Mobile: show reasoning panel -->
+          <button
+            id="mobile-reasoning-toggle"
+            class="btn btn--outline"
+            aria-label="Toggle reasoning panel"
+            aria-expanded="false"
+            style="display:none"
+          >🧠 Reasoning</button>
+        </li>
+        <li><a href="https://github.com/www-infinity/Npx-Claude-flow-" target="_blank" rel="noopener noreferrer" class="btn btn--outline">GitHub</a></li>
+      </ul>
+      <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Chat layout -->
+  <div class="chat-layout">
+
+    <!-- Left: Reasoning panel -->
+    <aside class="reasoning-panel" id="reasoning-panel" aria-label="AI reasoning trace">
+      <div class="reasoning-panel__header">
+        <span class="reasoning-panel__title">
+          <span class="dot" id="reasoning-dot"></span>
+          Reasoning trace
+        </span>
+        <button class="btn-icon" id="clear-reasoning" title="Clear reasoning">✕</button>
+      </div>
+      <div class="reasoning-panel__body" id="reasoning-body">
+        <p class="reasoning-panel__empty" id="reasoning-empty">
+          Send a message to see<br />Gemma 3's live reasoning trace.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Right: Chat -->
+    <main class="chat-main">
+
+      <!-- Messages -->
+      <div class="chat-messages" id="messages" role="log" aria-live="polite" aria-label="Chat messages">
+        <!-- Welcome message -->
+        <div class="message message--system">
+          <div class="message__bubble">
+            Demo mode — no API key required. Connected to <strong>Gemma 3</strong> agent pipeline.
+          </div>
+        </div>
+        <div class="message message--assistant">
+          <div class="message__avatar">G</div>
+          <div class="message__bubble">
+            Hi! I'm the <strong>Gemma 3</strong> autonomous system architect for the <strong>Pewpi-Infinity</strong> ecosystem.<br><br>
+            I can reason through complex tasks and call tools to build repos, inject files, deploy sites, analyse code, and browse URLs — all with a live reasoning trace on the left.<br><br>
+            Try one of the suggestions below or type your own request.
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestion chips -->
+      <div class="chat-suggestions" role="list" aria-label="Suggested prompts">
+        <button class="suggestion-chip" role="listitem" data-prompt="Create a repo called pewpi-landing with an index.html and README">🗄 Create repo</button>
+        <button class="suggestion-chip" role="listitem" data-prompt="Build a full landing page website for Infinity">🌐 Build website</button>
+        <button class="suggestion-chip" role="listitem" data-prompt="Analyse www-infinity/Npx-Claude-flow- for bugs">🔍 Analyse code</button>
+        <button class="suggestion-chip" role="listitem" data-prompt="Deploy www-infinity/pewpi-landing to GitHub Pages">🚀 Deploy site</button>
+        <button class="suggestion-chip" role="listitem" data-prompt="Fetch https://github.com/www-infinity/Npx-Claude-flow-">🌐 Browse URL</button>
+        <button class="suggestion-chip" role="listitem" data-prompt="Inject a src/app.js file into www-infinity/pewpi-landing">📄 Inject file</button>
+      </div>
+
+      <!-- Input bar -->
+      <div class="chat-input-bar">
+        <div class="chat-input-wrap">
+          <textarea
+            id="chat-input"
+            class="chat-input"
+            placeholder="Ask Gemma to create a repo, analyse code, build a site…"
+            rows="1"
+            maxlength="1000"
+            aria-label="Chat input"
+          ></textarea>
+          <span class="chat-input-char" id="char-count">0 / 1000</span>
+        </div>
+        <button id="send-btn" class="btn-send" aria-label="Send message" title="Send (Enter)">
+          ➤
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/chat.js"></script>
+  <script>
+    // Show mobile reasoning toggle only on small screens
+    (function () {
+      const toggle = document.getElementById('mobile-reasoning-toggle');
+      if (toggle && window.innerWidth <= 768) toggle.style.display = '';
+    }());
+
+    // Clear reasoning button
+    document.getElementById('clear-reasoning').addEventListener('click', () => {
+      const body = document.getElementById('reasoning-body');
+      const empty = document.getElementById('reasoning-empty');
+      body.innerHTML = '';
+      if (empty) body.appendChild(empty);
+      document.getElementById('reasoning-dot').classList.remove('active');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gemma 3 Tool Call Schemas",
+  "description": "JSON schemas for Gemma 3 function-calling tools: GitHub repo management and file injection.",
+  "definitions": {
+    "file_entry": {
+      "type": "object",
+      "required": ["path", "content"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "File path relative to the repository root (e.g. 'src/index.js')"
+        },
+        "content": {
+          "type": "string",
+          "description": "Full text content of the file"
+        },
+        "encoding": {
+          "type": "string",
+          "enum": ["utf-8", "base64"],
+          "default": "utf-8",
+          "description": "Content encoding"
+        }
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "create_repo",
+      "description": "Creates a new GitHub repository and optionally injects seed files in one atomic operation.",
+      "parameters": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_.-]+$",
+            "description": "Repository name (no spaces, URL-safe)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description shown on the repo page"
+          },
+          "private": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set true to create a private repository"
+          },
+          "auto_init": {
+            "type": "boolean",
+            "default": true,
+            "description": "Initialise the repo with a README.md commit"
+          },
+          "license": {
+            "type": "string",
+            "enum": ["mit", "apache-2.0", "gpl-3.0", "unlicense", "none"],
+            "default": "mit",
+            "description": "SPDX license identifier to apply to the new repository"
+          },
+          "topics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "GitHub topic tags (e.g. ['ai', 'gemma', 'agent'])"
+          },
+          "files": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/file_entry" },
+            "description": "Seed files to commit immediately after creation"
+          }
+        }
+      },
+      "example": {
+        "tool_call": {
+          "name": "create_repo",
+          "parameters": {
+            "name": "pewpi-landing",
+            "description": "AI-generated landing page for the Pewpi-Infinity ecosystem",
+            "private": false,
+            "auto_init": true,
+            "license": "mit",
+            "topics": ["ai", "gemma3", "infinity"],
+            "files": [
+              {
+                "path": "index.html",
+                "content": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Pewpi Infinity</title></head><body><h1>Welcome</h1></body></html>"
+              },
+              {
+                "path": "README.md",
+                "content": "# Pewpi Landing\nAI-generated site.\n"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "inject_file",
+      "description": "Creates or overwrites a file in an existing GitHub repository via the Contents API.",
+      "parameters": {
+        "type": "object",
+        "required": ["repo", "path", "content"],
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "Full repo identifier: 'owner/repo' (e.g. 'www-infinity/my-site')"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path of the file inside the repository"
+          },
+          "content": {
+            "type": "string",
+            "description": "New file content (UTF-8 text)"
+          },
+          "message": {
+            "type": "string",
+            "description": "Git commit message for this change",
+            "default": "chore: inject file via Gemma agent"
+          },
+          "branch": {
+            "type": "string",
+            "default": "main",
+            "description": "Target branch to commit to"
+          },
+          "sha": {
+            "type": "string",
+            "description": "Blob SHA of the existing file (required when updating, omit when creating)"
+          }
+        }
+      },
+      "example": {
+        "tool_call": {
+          "name": "inject_file",
+          "parameters": {
+            "repo": "www-infinity/pewpi-landing",
+            "path": "src/app.js",
+            "content": "console.log('Pewpi Infinity — AI-powered');\n",
+            "message": "feat: add app entry point",
+            "branch": "main"
+          }
+        }
+      }
+    },
+    {
+      "name": "deploy_site",
+      "description": "Enables GitHub Pages (or triggers a deployment workflow) for a repository.",
+      "parameters": {
+        "type": "object",
+        "required": ["repo"],
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "Full repo identifier: 'owner/repo'"
+          },
+          "source_branch": {
+            "type": "string",
+            "default": "main",
+            "description": "Branch to serve GitHub Pages from"
+          },
+          "source_path": {
+            "type": "string",
+            "enum": ["/", "/docs"],
+            "default": "/",
+            "description": "Root path for Pages — '/' or '/docs'"
+          },
+          "workflow": {
+            "type": "string",
+            "description": "Optional: name of a GitHub Actions workflow file to trigger instead of Pages (e.g. 'deploy.yml')"
+          }
+        }
+      },
+      "example": {
+        "tool_call": {
+          "name": "deploy_site",
+          "parameters": {
+            "repo": "www-infinity/pewpi-landing",
+            "source_branch": "main",
+            "source_path": "/"
+          }
+        }
+      }
+    },
+    {
+      "name": "analyze_code",
+      "description": "Reads and analyses files in a GitHub repository, returning a structured summary.",
+      "parameters": {
+        "type": "object",
+        "required": ["repo"],
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "Full repo identifier: 'owner/repo'"
+          },
+          "paths": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Specific file paths to analyse; if omitted, analyses the whole repo"
+          },
+          "focus": {
+            "type": "string",
+            "enum": ["bugs", "security", "performance", "style", "summary"],
+            "default": "summary",
+            "description": "Analysis focus area"
+          }
+        }
+      },
+      "example": {
+        "tool_call": {
+          "name": "analyze_code",
+          "parameters": {
+            "repo": "www-infinity/Npx-Claude-flow-",
+            "focus": "bugs"
+          }
+        }
+      }
+    },
+    {
+      "name": "browse_url",
+      "description": "Fetches and parses a URL, returning LLM-friendly markdown content for further reasoning.",
+      "parameters": {
+        "type": "object",
+        "required": ["url"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL to fetch"
+          },
+          "extract": {
+            "type": "string",
+            "enum": ["full", "main_content", "links", "metadata"],
+            "default": "main_content",
+            "description": "What to extract from the page"
+          },
+          "max_length": {
+            "type": "integer",
+            "default": 4096,
+            "description": "Maximum characters to return"
+          }
+        }
+      },
+      "example": {
+        "tool_call": {
+          "name": "browse_url",
+          "parameters": {
+            "url": "https://github.com/www-infinity/Npx-Claude-flow-",
+            "extract": "main_content"
+          }
+        }
+      }
+    }
+  ]
+}
