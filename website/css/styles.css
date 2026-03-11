@@ -334,6 +334,44 @@ body {
   color: var(--color-accent);
 }
 
+/* ── Chat CTA ─────────────────────────────────────────────────────── */
+.cta-chat {
+  padding: 5rem 0;
+  border-top: 1px solid var(--color-border);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-primary) 8%, transparent),
+    color-mix(in srgb, var(--color-accent) 5%, transparent));
+}
+
+.cta-chat__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.cta-chat__text h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cta-chat__text p {
+  color: var(--color-muted);
+  max-width: 38rem;
+}
+
+.btn--lg {
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .cta-chat__inner { flex-direction: column; text-align: center; }
+}
+
 /* ── Footer ───────────────────────────────────────────────────────── */
 .site-footer {
   border-top: 1px solid var(--color-border);
