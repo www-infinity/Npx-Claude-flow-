@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Infinity — AI-powered multi-agent workflow platform built on Claude." />
+  <title>Infinity | AI Agent Workflows</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="site-header">
+    <nav class="nav container">
+      <a href="#" class="nav__logo">∞ Infinity</a>
+      <ul class="nav__links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#quickstart">Quickstart</a></li>
+        <li><a href="https://github.com/www-infinity/Npx-Claude-flow-" target="_blank" rel="noopener noreferrer" class="btn btn--outline">GitHub</a></li>
+      </ul>
+      <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__badge">Powered by Claude</div>
+      <h1 class="hero__title">Multi-Agent AI Workflows,<br />Made Simple</h1>
+      <p class="hero__subtitle">
+        Spin up a mesh of Claude agents in seconds. Coordinate complex tasks,
+        analyze repositories, and automate intelligent pipelines — all from your terminal.
+      </p>
+      <div class="hero__actions">
+        <a href="#quickstart" class="btn btn--primary">Get Started</a>
+        <a href="https://github.com/www-infinity/Npx-Claude-flow-" target="_blank" rel="noopener noreferrer" class="btn btn--secondary">View on GitHub</a>
+      </div>
+      <div class="hero__code">
+        <pre><code>npx claude-flow@alpha hive init --topology mesh --agents 5</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Everything you need to orchestrate AI agents</h2>
+      <p class="section-subtitle">Claude Flow gives you a production-ready multi-agent platform in one command.</p>
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">⬡</div>
+          <h3>Mesh Topology</h3>
+          <p>Agents communicate peer-to-peer in a resilient mesh network. No single point of failure.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🔄</div>
+          <h3>Dynamic Scaling</h3>
+          <p>Spin up any number of agents on demand and distribute workloads automatically.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🧠</div>
+          <h3>Claude-Powered</h3>
+          <p>Every agent is backed by Anthropic's Claude API — fast, safe, and highly capable.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">📦</div>
+          <h3>Zero Config</h3>
+          <p>One <code>npx</code> command and you're running. No servers to provision, no infra to manage.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🔍</div>
+          <h3>Repo Analysis</h3>
+          <p>Point a worker swarm at any GitHub organisation to analyse, diagnose, and summarise repos at scale.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🔒</div>
+          <h3>Secure by Default</h3>
+          <p>API keys stay in your environment. No credentials leave your machine.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <ol class="steps">
+        <li class="step">
+          <div class="step__number">01</div>
+          <div class="step__content">
+            <h3>Initialise the hive</h3>
+            <p>Run <code>npx claude-flow@alpha hive init</code> to bootstrap your agent cluster with the topology and agent count of your choice.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step__number">02</div>
+          <div class="step__content">
+            <h3>Write your worker</h3>
+            <p>Use the <code>claude_worker.py</code> template to define exactly what each agent should do — from repo analysis to code generation.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step__number">03</div>
+          <div class="step__content">
+            <h3>Run and collect results</h3>
+            <p>Execute your worker script. Agents fan out across the workload in parallel and return structured insights.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Quickstart -->
+  <section class="quickstart" id="quickstart">
+    <div class="container">
+      <h2 class="section-title">Quickstart</h2>
+      <p class="section-subtitle">Up and running in under two minutes.</p>
+      <div class="quickstart__steps">
+        <div class="qs-step">
+          <span class="qs-step__label">1. Bootstrap the hive</span>
+          <pre><code>npx claude-flow@alpha hive init --topology mesh --agents 5</code></pre>
+        </div>
+        <div class="qs-step">
+          <span class="qs-step__label">2. Set your API key</span>
+          <pre><code>export ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+        </div>
+        <div class="qs-step">
+          <span class="qs-step__label">3. Run the worker</span>
+          <pre><code>python claude_worker.py</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <span class="nav__logo">∞ Infinity</span>
+      <p>&copy; <span id="year"></span> www-infinity. Released under the MIT License.</p>
+      <a href="https://github.com/www-infinity/Npx-Claude-flow-" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
